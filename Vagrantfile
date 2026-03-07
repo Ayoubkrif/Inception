@@ -40,16 +40,24 @@ Vagrant.configure("2") do |config|
 
 	# Provisionnement avec Shell
 	config.vm.provision "shell", inline: <<-SHELL
-		# suppression des paquets qui peuvent entrer en conflit
+		
+                # suppression des paquets qui peuvent entrer en conflit
 		sudo apk remove docker-compose docker-doc podman-docker containerd runc
-		# Installer dependances de base ici
+                # Installer dependances de base ici
 		sudo apk add ca-certificates curl
-		# Installer docker
+                # Installer docker
 		sudo apk add docker docker-cli docker-cli-compose
-		# Connecting to the Docker daemon through its socket requires you to add yourself to the docker group. 
-		addgroup vagrant docker
-		# To start the Docker daemon at boot, see OpenRC. 
+                # Create user 
+                sudo adduser -h /home/aykrifa -s /bin/bash aykrifa
+
+
+                # Connecting to the Docker daemon through its socket requires you to add yourself to the docker group. 
+		addgroup aykrifa docker
+                # To start the Docker daemon at boot, see OpenRC. 
 		rc-update add docker default
 		service docker start
+                # Clone repo
+                # git clone git@vogsphere.42paris.fr:vogsphere/intra-uuid-67dd4228-d48b-4513-a2e2-37648c187dc4-7296464-aykrifa /home/aykrifa/Inception
+  
 	SHELL
 end
