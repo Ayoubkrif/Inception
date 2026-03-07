@@ -9,17 +9,21 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-	# Box Ubuntu 22.04 LTS (compatible VirtualBox et libvirt)
-	config.vm.box = "generic/ubuntu2204"
+	## Box Ubuntu 22.04 LTS (compatible VirtualBox et libvirt)
+	#config.vm.box = "generic/ubuntu2204"
+
+	# Basic box alpine version ?
+ 	config.vm.box = "generic-x64/alpine319"
+ 	config.vm.box_version = "4.3.12"
 
 	# Nom d'hôte de la VM
 	config.vm.hostname = "aykrifa"
 
 	# Réseau privé avec IP statique
-	config.vm.network "private_network", ip: "192.168.56.10"
+	# config.vm.network "private_network", ip: "192.168.56.10"
 
 	# Dossier synchronisé (désactivé ici pour éviter les dépendances)
-	config.vm.synced_folder ".", "/vagrant", disabled: false
+	config.vm.synced_folder ".", "/shared", disabled: false
 
 	# Configuration pour VirtualBox
 	config.vm.provider "virtualbox" do |vb|
@@ -36,7 +40,16 @@ Vagrant.configure("2") do |config|
 
 	# Provisionnement avec Shell
 	config.vm.provision "shell", inline: <<-SHELL
-		apt-get update -qq
-		apt-get install -y htop curl
+		# suppression des paquets qui peuvent entrer en conflit
+		sudo apk remove docker-compose docker-doc podman-docker containerd runc
+		# Installer dependances de base ici
+		sudo apk add ca-certificates curl
+		# Installer docker
+		sudo apk add docker docker-cli docker-cli-compose
+		# Connecting to the Docker daemon through its socket requires you to add yourself to the docker group. 
+		addgroup vagrant docker
+		# To start the Docker daemon at boot, see OpenRC. 
+		rc-update add docker default
+		service docker start
 	SHELL
 end
