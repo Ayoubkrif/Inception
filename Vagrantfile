@@ -90,14 +90,16 @@ Vagrant.configure("2") do |config|
 	# Create a forwarded port mapping which allows access to a specific port
 	# within the machine from a port on the host machine and only allow access
 	# via 127.0.0.1 to disable public access
-	config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+	config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
+	config.vm.network "forwarded_port", guest: 80, host: 8000, host_ip: "127.0.0.1"
+	config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
 
 
 	# Provisionnement avec Shell
 	config.vm.provision "shell", inline: <<-SHELL
 		
                 # suppression des paquets qui peuvent entrer en conflit
-		sudo apk remove docker-compose docker-doc podman-docker containerd runc
+		sudo apk del docker-compose docker-doc podman-docker containerd runc
                 # Installer dependances de base ici
 		sudo apk add ca-certificates curl
                 # Installer docker
@@ -106,13 +108,11 @@ Vagrant.configure("2") do |config|
                 sudo adduser -h /home/aykrifa -s /bin/bash aykrifa
 
 
+
                 # Connecting to the Docker daemon through its socket requires you to add yourself to the docker group. 
 		addgroup aykrifa docker
                 # To start the Docker daemon at boot, see OpenRC. 
 		rc-update add docker default
 		service docker start
-                # Clone repo
-                # git clone git@vogsphere.42paris.fr:vogsphere/intra-uuid-67dd4228-d48b-4513-a2e2-37648c187dc4-7296464-aykrifa /home/aykrifa/Inception
-  
 	SHELL
 end
