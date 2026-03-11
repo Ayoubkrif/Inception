@@ -13,5 +13,5 @@ vm:
 destroy:
 	ssh-keygen -R "[localhost]:2222" && vagrant destroy -f
 
-arch:
-	mkdir -p srcs/nginx srcs/wordpress srcs/mariadb
+re: destroy
+	$(MAKE) vm
