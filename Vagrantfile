@@ -103,15 +103,13 @@ Vagrant.configure("2") do |config|
 		sudo apk add ca-certificates curl
                 # Installer docker
 		sudo apk add docker docker-cli docker-cli-compose
-                # Create user 
-                sudo adduser -h /home/aykrifa -s /bin/bash aykrifa
-
-
-
-                # Connecting to the Docker daemon through its socket requires you to add yourself to the docker group. 
-		addgroup aykrifa docker
+#               # Create user 
+#               sudo adduser -h /home/aykrifa -s /bin/bash aykrifa
+#               # Connecting to the Docker daemon through its socket requires you to add yourself to the docker group. 
+#		addgroup aykrifa docker
                 # To start the Docker daemon at boot, see OpenRC. 
 		rc-update add docker default
 		service docker start
 	SHELL
 end
+
