@@ -15,3 +15,5 @@ destroy:
 
 re: destroy
 	$(MAKE) vm
+
+.PHONY: vm, destroy, re
