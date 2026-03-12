@@ -103,6 +103,12 @@ Vagrant.configure("2") do |config|
 		sudo apk add ca-certificates curl
                 # Installer docker
 		sudo apk add docker docker-cli docker-cli-compose
+		# Installer git
+		sudo apk install git
+		# Copier les clefs ssh
+		sudo mkdir /root/.ssh
+		sudo cp /shared/vm /root/.ssh/id_rsa
+		sudo cp /shared/vm.pub /root/.ssh/id_rsa.pub
 #               # Create user 
 #               sudo adduser -h /home/aykrifa -s /bin/bash aykrifa
 #               # Connecting to the Docker daemon through its socket requires you to add yourself to the docker group. 
