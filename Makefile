@@ -28,4 +28,13 @@ compose:
 stop:
 	docker compose down
 
+kill:
+	docker rm $$(docker ps -q) -f
+	docker rmi $$(docker images -q) -f
+	make ls
+
+ls:
+	docker images
+	docker ps -a
+
 .PHONY: inception, destroy, re
