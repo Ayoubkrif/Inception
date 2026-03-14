@@ -6,14 +6,26 @@
 #                                                                              #
 # **************************************************************************** #
 
-
-vm:
-	vagrant up && vagrant ssh
+inception:
+	VBoxManage setproperty machinefolder $$(pwd)
+	cp ~/.ssh/vm .
+	cp ~/.ssh/vm.pub .
+	vagrant up
+	vagrant ssh
 
 destroy:
-	ssh-keygen -R "[localhost]:2222" && vagrant destroy -f
+	rm -f vm
+	rm -f vm.pub
+	ssh-keygen -R "[localhost]:2222"
+	vagrant destroy -f
 
 re: destroy
-	$(MAKE) vm
+	$(MAKE) inception
 
-.PHONY: vm, destroy, re
+compose:
+	docker compose up -d -f srcs/docker-compose.yml
+
+stop:
+	docker compose down
+
+.PHONY: inception, destroy, re
