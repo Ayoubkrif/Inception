@@ -6,54 +6,51 @@
 #                                                                              #
 # **************************************************************************** #
 
-# vi: set ft=ruby :
+### Example configuration of new VM..
+#config.vm.define :test_vm do |test_vm|
+  ## Box name
+  #test_vm.vm.box = "centos64"
 
-  # Example configuration of new VM..
+  ## Domain Specific Options
   #
-  #config.vm.define :test_vm do |test_vm|
-    # Box name
-    #
-    #test_vm.vm.box = "centos64"
-
-    # Domain Specific Options
-    #
-    # See README for more info.
-    #
-    #test_vm.vm.provider :libvirt do |domain|
-    #  domain.memory = 2048
-    #  domain.cpus = 2
-    #end
-
-    # Interfaces for VM
-    #
-    # Networking features in the form of `config.vm.network`
-    #
-    #test_vm.vm.network :private_network, :ip => '10.20.30.40'
-    #test_vm.vm.network :public_network, :ip => '10.20.30.41'
+  ## See README for more info.
+  #
+  ##test_vm.vm.provider :libvirt do |domain|
+  #  domain.memory = 2048
+  #  domain.cpus = 2
   #end
 
+  ## Interfaces for VM
+  #
+  ## Networking features in the form of `config.vm.network`
+  #
+  #test_vm.vm.network :private_network, :ip => '10.20.30.40'
+  #test_vm.vm.network :public_network, :ip => '10.20.30.41'
+#end
+
+### Current config
 Vagrant.configure("2") do |config|
-	# Basic box alpine version ?
+  ## Basic box alpine version ?
  	config.vm.box = "generic-x64/alpine319"
  	config.vm.box_version = "4.3.12"
 
-	# Nom d'hôte de la VM
+	## Nom d'hôte de la VM
 	config.vm.hostname = "aykrifa"
 
-	# Réseau privé avec IP statique
+	## Réseau privé avec IP statique
 	# config.vm.network "private_network", ip: "192.168.56.10"
 
-	# Dossier synchronisé (désactivé ici pour éviter les dépendances)
+	## Dossier synchronisé
 	config.vm.synced_folder ".", "/shared", disabled: false
 
-	# Configuration pour VirtualBox
+	## Configuration pour VirtualBox
 	config.vm.provider "virtualbox" do |vb|
 		vb.memory = "1024"
 		vb.cpus = 1
-        vb.name = "Inception"
-    end
-        
-    # Options for Libvirt Vagrant provider.
+		vb.name = "Inception"
+	end
+
+    ## Options for Libvirt Vagrant provider.
     config.vm.provider :libvirt do |libvirt|
 
       # A hypervisor name to access. Different drivers can be specified, but
@@ -104,7 +101,7 @@ Vagrant.configure("2") do |config|
                 # Installer docker
 		sudo apk add docker docker-cli docker-cli-compose
 		# Installer git
-		sudo apk install git
+		sudo apk add git
 		# Copier les clefs ssh
 		sudo mkdir /root/.ssh
 		sudo cp /shared/vm /root/.ssh/id_rsa
