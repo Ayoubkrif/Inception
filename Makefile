@@ -23,7 +23,7 @@ re: destroy
 	$(MAKE) inception
 
 compose:
-	docker compose up -d -f srcs/docker-compose.yml
+	docker compose -f srcs/docker-compose.yml up -d
 
 stop:
 	docker compose down
