@@ -1,0 +1,11 @@
+services:
+  nginx:
+    # docker build -t CONTEXT IMAGE_NAME
+    build:
+      context: nginx/
+    image: nginx
+    
+    # docker run --name CONTAINER_NAME -p PORT_HOST:PORT_GUEST IMAGE_NAME
+    container_name: nginx_container
+    ports:
+      - "443:443"
