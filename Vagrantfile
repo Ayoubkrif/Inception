@@ -97,7 +97,7 @@ Vagrant.configure("2") do |config|
                 # suppression des paquets qui peuvent entrer en conflit
 		sudo apk del docker-compose docker-doc podman-docker containerd runc
                 # Installer dependances de base ici
-		sudo apk add ca-certificates curl
+		sudo apk add make curl
                 # Installer docker
 		sudo apk add docker docker-cli docker-cli-compose
 		# Installer git
