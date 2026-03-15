@@ -8,7 +8,7 @@ services:
   nginx:
     # docker build -t CONTEXT IMAGE_NAME
     build: nginx/
-    pull_policy: never
+    pull_policy: build
     image: nginx
 
     # docker run --name CONTAINER_NAME -p PORT_HOST:PORT_GUEST IMAGE_NAME
