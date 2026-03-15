@@ -25,6 +25,9 @@ re: destroy
 compose:
 	docker compose -f srcs/docker-compose.yml up -d
 
+compose debug:
+	docker compose -v -f srcs/docker-compose.yml up -d
+
 stop:
 	docker compose down
 
