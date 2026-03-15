@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
 	config.vm.hostname = "aykrifa"
 
 	## Réseau privé avec IP statique
-	# config.vm.network "private_network", ip: "192.168.56.10"
+	config.vm.network "private_network", ip: "192.168.56.10"
 
 	## Dossier synchronisé
 	config.vm.synced_folder ".", "/shared", disabled: false
@@ -88,7 +88,8 @@ Vagrant.configure("2") do |config|
 	# within the machine from a port on the host machine and only allow access
 	# via 127.0.0.1 to disable public access
 	# config.vm.network "forwarded_port", guest: 0000, host: 0000, host_ip: "127.0.0.1"
-	config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
+    config.vm.network "forwarded_port", guest: 443, host: 4430, host_ip: "127.0.0.1", id: "nginx SSL"
+	# config.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "127.0.0.1", id: "SSH"
 
 
 	# Provisionnement avec Shell
