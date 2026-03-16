@@ -14,14 +14,12 @@ reset: # reset env and secret
 
 env: # build .env
 	@cd srcs/ && if [ ! -f .env ]; then \
-		echo "$(YELLOW)--- Configuration du fichier .env ---$(RESET)"; \
 		read -p "(DB_NAME) : " dbname; \
 		read -p "(USER_LOGIN) : " login; \
-		read -p "(DOMAIN_NAME) : " domain; \
 		read -p "(DB_PATH) : " dbpath; \
+		\
 		echo "MYSQL_DATABASE=$$dbname" > .env; \
 		echo "MYSQL_USER=$$login" >> .env; \
-		echo "DOMAIN_NAME=$$domain" >> .env; \
 		echo "HOST_DATA_PATH=$$dbpath" >> .env; \
 	else \
 		echo ".env already exist"; \
