@@ -66,6 +66,6 @@ volumes:
 
 secrets:
   mariadb_root_password:
-    file: ../mariadb_root_password.secret
+    file: ./mariadb_root_password.secret
   mariadb_password:
-    file: ../mariadb_password.secret
+    file: ./mariadb_password.secret

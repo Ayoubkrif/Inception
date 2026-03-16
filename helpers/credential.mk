@@ -8,12 +8,12 @@ YELLOW       = \033[0;33m
 RESET        = \033[0m
 
 reset: # reset env and secret
-	rm -rf .env *.secret
+	cd srcs/ && rm -rf .env *.secret
 	make env
 	make secrets
 
 env: # build .env
-	@if [ ! -f .env ]; then \
+	@cd srcs/ && if [ ! -f .env ]; then \
 		echo "$(YELLOW)--- Configuration du fichier .env ---$(RESET)"; \
 		read -p "(DB_NAME) : " dbname; \
 		read -p "(USER_LOGIN) : " login; \
@@ -23,13 +23,12 @@ env: # build .env
 		echo "MYSQL_USER=$$login" >> .env; \
 		echo "DOMAIN_NAME=$$domain" >> .env; \
 		echo "HOST_DATA_PATH=$$dbpath" >> .env; \
-		echo "$(GREEN).env créé avec succès.$(RESET)"; \
 	else \
-		echo ".env existe déjà, passage à l'étape suivante."; \
+		echo ".env already exist"; \
 	fi
 
 secrets: # build passwd
-	@if [ ! -f secrets/mariadb_root_password.secret ]; then \
+	@cd srcs/ && if [ ! -f mariadb_root_password.secret ]; then \
 		printf "Mot de passe ROOT MariaDB : "; \
 		stty -echo; \
 		read rootpass; \
@@ -43,7 +42,7 @@ secrets: # build passwd
 		echo "$$rootpass" > mariadb_root_password.secret; \
 		echo "$$userpass" > mariadb_password.secret; \
 	else \
-		echo "Les secrets existent déjà."; \
+		echo "secret already exist"; \
 	fi
 
 .PHONY: setup env secrets
