@@ -43,9 +43,13 @@ services:
     networks:
         - docker_network
 
+    volumes:
+        - DB:/var/lib/mysql/
+
     restart: unless-stopped
 
 ## TODO under this
+# add ${HOST_DATA_PATH} to .env
 volumes:
   DB:
     name: DB

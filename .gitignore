@@ -1,3 +1,5 @@
 vm*
 Inception/
 .vagrant/
+*.secret
+.env
