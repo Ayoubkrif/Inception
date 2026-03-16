@@ -11,8 +11,8 @@ clean: # docker compose down
 	docker compose down -v
 
 kill: # remove all containers then remove all images then ls
-	docker rm $$(docker ps -q) -f
-	docker rmi $$(docker images -q) -f
+	docker rm $$(docker ps -aq) -f; \
+	docker rmi $$(docker images -aq) -f
 	make ls
 
 ls: # list images and containers
