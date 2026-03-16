@@ -48,8 +48,6 @@ services:
 
     restart: unless-stopped
 
-## TODO under this
-# add ${HOST_DATA_PATH} to .env
 volumes:
   DB:
     name: DB
@@ -58,3 +56,4 @@ volumes:
       type: none
       o: bind
       device: ${HOST_DATA_PATH}
+      ## TODO : handle secrets

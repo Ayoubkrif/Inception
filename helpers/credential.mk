@@ -18,9 +18,11 @@ env: # build .env
 		read -p "(DB_NAME) : " dbname; \
 		read -p "(USER_LOGIN) : " login; \
 		read -p "(DOMAIN_NAME) : " domain; \
+		read -p "(DB_PATH) : " dbpath; \
 		echo "MYSQL_DATABASE=$$dbname" > .env; \
 		echo "MYSQL_USER=$$login" >> .env; \
 		echo "DOMAIN_NAME=$$domain" >> .env; \
+		echo "HOST_DATA_PATH=$$dbpath" >> .env; \
 		echo "$(GREEN).env créé avec succès.$(RESET)"; \
 	else \
 		echo ".env existe déjà, passage à l'étape suivante."; \
