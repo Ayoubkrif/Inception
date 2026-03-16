@@ -4,6 +4,7 @@ networks:
     # https://docs.docker.com/engine/network/drivers/
     driver: bridge 
 
+
 services:
   NGINX:
     # docker build -t CONTEXT IMAGE_NAME
@@ -46,7 +47,12 @@ services:
     volumes:
         - DB:/var/lib/mysql/
 
+    secrets:
+        - mariadb_root_password
+        - mariadb_password
+
     restart: unless-stopped
+
 
 volumes:
   DB:
@@ -56,4 +62,10 @@ volumes:
       type: none
       o: bind
       device: ${HOST_DATA_PATH}
-      ## TODO : handle secrets
+
+
+secrets:
+  mariadb_root_password:
+    file: ../mariadb_root_password.secret
+  mariadb_password:
+    file: ../mariadb_password.secret
