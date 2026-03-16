@@ -52,6 +52,10 @@ services:
         - mariadb_password
 
     restart: unless-stopped
+    #DEBUG
+    command: tail -f /dev/null
+    stdin_open: true 
+    tty: true
 
 
 volumes:
