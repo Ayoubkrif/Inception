@@ -53,7 +53,7 @@ services:
 
     restart: unless-stopped
     #DEBUG
-    command: tail -f /dev/null
+    entrypoint: ["tail", "-f", "/dev/null"]
     stdin_open: true 
     tty: true
 
