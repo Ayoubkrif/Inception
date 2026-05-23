@@ -57,6 +57,8 @@ services:
     stdin_open: true 
     tty: true
 
+  WordPress:
+
 
 volumes:
   DB:
