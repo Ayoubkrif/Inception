@@ -3,3 +3,4 @@ Inception/
 .vagrant/
 *.secret
 .env
+DB/
