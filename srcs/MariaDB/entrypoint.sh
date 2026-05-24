@@ -13,4 +13,6 @@ GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 
-exec mysqld --user=mysql
+# provisioire, debug
+# exec mysqld --user=mysql
+tail -f /dev/null
