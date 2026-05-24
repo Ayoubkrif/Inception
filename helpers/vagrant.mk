@@ -14,7 +14,7 @@ destroy: # vagrant destroy properly
 	ssh-keygen -R "[localhost]:2222"
 	vagrant destroy -f
 
-rebuild: destroy # rebuild
+rebuild: destroy # rebuild destroy + vm
 	$(MAKE) vm
 
 .PHONY: vm, destroy, rebuild

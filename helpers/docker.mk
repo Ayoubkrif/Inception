@@ -15,8 +15,15 @@ kill: # remove all containers then remove all images then ls
 	docker rmi $$(docker images -aq) -f
 	make ls
 
+kill_volumes: # remove all docker volumes
+	docker volume rm $$(docker volume ls -q) -f
+	make ls
+
 ls: # list images and containers
 	docker images
 	docker ps -a
-.PHONY: clean, ls, kill, compose, debug
+
+ls_volumes: # list all docker volumes
+	docker volume ls
+.PHONY: clean, ls, ls_volumes, kill, kill_volumes, compose, debug
 
