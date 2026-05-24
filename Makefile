@@ -10,7 +10,8 @@ list:
 	@echo "Commandes disponibles :"
 	@grep -hE '^[a-zA-Z0-9_-]+:.*#' $(MAKEFILE_LIST) | \
 		sed 's/:.*#/:/' | \
-		awk -F: '{ printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2 }'
+		awk -F: '{ printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2 }' | \
+		sort
 
 .PHONY: list
 

@@ -4,26 +4,37 @@
 compose: # docker compose
 	docker compose -f srcs/docker-compose.yml up -d
 
-compose_debug: # docker compose debug
+compose_verbose: # docker compose verbose
 	docker compose -v -f srcs/docker-compose.yml up -d
+
+compose_debug: # show docker compose variable expanditure
+	docker compose -f srcs/docker-compose.yml config
 
 clean: # docker compose down
 	docker compose down -v
 
-kill: # remove all containers then remove all images then ls
-	docker rm $$(docker ps -aq) -f; \
-	docker rmi $$(docker images -aq) -f
-	make ls
-
-kill_volumes: # remove all docker volumes
-	docker volume rm $$(docker volume ls -q) -f
-	make ls
-
-ls: # list images and containers
+image_ls: # list all docker images
 	docker images
+
+container_ls: # list all docker containers
 	docker ps -a
 
-ls_volumes: # list all docker volumes
+volume_ls: # list all docker volumes
 	docker volume ls
-.PHONY: clean, ls, ls_volumes, kill, kill_volumes, compose, debug
 
+ls: image_ls container_ls volume_ls # list images, containers and volumes
+
+image_kill: # remove all docker images
+	docker rmi $$(docker images -aq) -f
+
+container_kill: # remove all docker containers
+	docker rm $$(docker ps -aq) -f
+
+volume_kill: # remove all docker volumes
+	docker volume rm $$(docker volume ls -q) -f
+
+kill: container_kill image_kill volume_kill ls # remove all containers, images and volumes
+
+.PHONY: compose compose_verbose compose_debug clean \
+        image_ls container_ls volume_ls ls \
+        image_kill container_kill volume_kill kill
