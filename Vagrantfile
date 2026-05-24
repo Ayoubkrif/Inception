@@ -114,6 +114,8 @@ Vagrant.configure("2") do |config|
                 # To start the Docker daemon at boot, see OpenRC. 
 		rc-update add docker default
 		service docker start
+		# Utiliser docker sans sudo
+		addgroup vagrant docker
 	SHELL
 end
 
