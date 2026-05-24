@@ -26,6 +26,11 @@ Projet Inception de l'école 42. Infrastructure Docker (NGINX, WordPress, MariaD
 | WPFiles | Fichiers du site WordPress |
 | DB      | Base de données MariaDB |
 
+## Environnement
+
+- Le projet tourne via **Vagrant** (VM Alpine)
+- Objectif de **reproductibilité maximale** : tout ce qui est manuel doit pouvoir être scripté et rejoué from scratch
+
 ## Contraintes du sujet
 
 - Bind mounts interdits — mais implémenter un bind mount à terme pour montrer la différence avec un vrai volume
