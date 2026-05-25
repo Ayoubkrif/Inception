@@ -5,7 +5,8 @@ FROM alpine:3.22
 RUN apk add mariadb mariadb-client
 # RUN apk add galera
 
-COPY entrypoint.sh .
+COPY healthcheck.sh /usr/local/bin/
+COPY docker-entrypoint.sh /usr/local/bin/
 
 # First command to launch
 ENTRYPOINT ["sh"]
