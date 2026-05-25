@@ -6,28 +6,6 @@
 #                                                                              #
 # **************************************************************************** #
 
-### Example configuration of new VM..
-#config.vm.define :test_vm do |test_vm|
-  ## Box name
-  #test_vm.vm.box = "centos64"
-
-  ## Domain Specific Options
-  #
-  ## See README for more info.
-  #
-  ##test_vm.vm.provider :libvirt do |domain|
-  #  domain.memory = 2048
-  #  domain.cpus = 2
-  #end
-
-  ## Interfaces for VM
-  #
-  ## Networking features in the form of `config.vm.network`
-  #
-  #test_vm.vm.network :private_network, :ip => '10.20.30.40'
-  #test_vm.vm.network :public_network, :ip => '10.20.30.41'
-#end
-
 ### Current config
 Vagrant.configure("2") do |config|
   ## Basic box alpine version ?
@@ -49,41 +27,6 @@ Vagrant.configure("2") do |config|
 		vb.cpus = 1
 		vb.name = "Inception"
 	end
-
-    ## Options for Libvirt Vagrant provider.
-    config.vm.provider :libvirt do |libvirt|
-
-      # A hypervisor name to access. Different drivers can be specified, but
-      # this version of provider creates KVM machines only. Some examples of
-      # drivers are KVM (QEMU hardware accelerated), QEMU (QEMU emulated),
-      # Xen (Xen hypervisor), lxc (Linux Containers),
-      # esx (VMware ESX), vmwarews (VMware Workstation) and more. Refer to
-      # documentation for available drivers (http://libvirt.org/drivers.html).
-        libvirt.driver = "kvm"
-
-      # The name of the server, where Libvirtd is running.
-      # libvirt.host = "localhost"
-
-      # If use ssh tunnel to connect to Libvirt.
-      libvirt.connect_via_ssh = false
-
-      # The username and password to access Libvirt. Password is not used when
-      # connecting via ssh.
-      libvirt.username = "aykrifa"
-      libvirt.password = "adm"
-
-      # Libvirt storage pool name, where box image and instance snapshots will
-      # be stored.
-      libvirt.storage_pool_name = "inception"
-
-        # Set a prefix for the machines that's different than the project dir name.
-        #libvirt.default_prefix = ''
-
-        # --- Configuration pour Libvirt (Fedora Natif) ---
-          libvirt.memory = 1024
-          libvirt.cpus = 1
-    end
-
 	# Create a forwarded port mapping which allows access to a specific port
 	# within the machine from a port on the host machine and only allow access
 	# via 127.0.0.1 to disable public access
@@ -91,31 +34,7 @@ Vagrant.configure("2") do |config|
     config.vm.network "forwarded_port", guest: 443, host: 4430, host_ip: "127.0.0.1", id: "nginx SSL"
 	# config.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "127.0.0.1", id: "SSH"
 
-
-	# Provisionnement avec Shell
-	config.vm.provision "shell", inline: <<-SHELL
-		
-                # suppression des paquets qui peuvent entrer en conflit
-		sudo apk del docker-compose docker-doc podman-docker containerd runc
-                # Installer dependances de base ici
-		sudo apk add make curl
-                # Installer docker
-		sudo apk add docker docker-cli docker-cli-compose
-		# Installer git
-		sudo apk add git
-		# Copier les clefs ssh
-		sudo mkdir /root/.ssh
-		sudo cp /shared/vm /root/.ssh/id_rsa
-		sudo cp /shared/vm.pub /root/.ssh/id_rsa.pub
-#               # Create user 
-#               sudo adduser -h /home/aykrifa -s /bin/bash aykrifa
-#               # Connecting to the Docker daemon through its socket requires you to add yourself to the docker group. 
-#		addgroup aykrifa docker
-                # To start the Docker daemon at boot, see OpenRC. 
-		rc-update add docker default
-		service docker start
-		# Utiliser docker sans sudo
-		addgroup vagrant docker
-	SHELL
+	# Provisionnement
+	config.vm.provision "shell", path: "provision.sh"
 end
 

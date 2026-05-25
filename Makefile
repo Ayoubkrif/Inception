@@ -6,6 +6,8 @@
 #                                                                              #
 # **************************************************************************** #
 
+.DEFAULT_GOAL := list
+
 list:
 	@echo "Commandes disponibles :"
 	@grep -hE '^[a-zA-Z0-9_-]+:.*#' $(MAKEFILE_LIST) | \
