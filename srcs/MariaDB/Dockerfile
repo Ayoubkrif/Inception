@@ -5,10 +5,14 @@ FROM alpine:3.22
 RUN apk add mariadb mariadb-client
 # RUN apk add galera
 
+#NOTE: Docker script convention
 COPY healthcheck.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/healthcheck.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# First command to launch
-ENTRYPOINT ["sh"]
-# Arguments
-CMD ["entrypoint.sh"]
+#NOTE: First command to launch
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+#NOTE: Arguments
+# CMD [""]
