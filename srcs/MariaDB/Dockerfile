@@ -1,6 +1,6 @@
 FROM alpine:3.22
-# INFO: Install the application dependencies
-# HACK: mariadb of alpine is mariadb-server of debian
+#INFO: Install the application dependencies
+#HACK: mariadb of alpine is mariadb-server of debian
 # No need galera ?
 RUN apk add mariadb mariadb-client
 # RUN apk add galera

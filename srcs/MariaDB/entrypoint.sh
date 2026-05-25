@@ -3,7 +3,7 @@
 MYSQL_ROOT_PASSWORD=$(cat /run/secrets/mariadb_root_password)
 MYSQL_PASSWORD=$(cat /run/secrets/mariadb_password)
 
-# NOTE: Provisionne la db ?
+#NOTE: Provisionne la db ?
 # mysqld --user=mysql --bootstrap << EOF
 # USE mysql;
 # FLUSH PRIVILEGES;
@@ -14,8 +14,8 @@ MYSQL_PASSWORD=$(cat /run/secrets/mariadb_password)
 # FLUSH PRIVILEGES;
 # EOF
 
-# TEST:provisioire, debug
+#TEST:provisioire, debug
 tail -f /dev/null
 
-# NOTE: remplacera le PID 1 par le deamon
+#NOTE: remplacera le PID 1 par le deamon
 # exec mysqld --user=mysql
