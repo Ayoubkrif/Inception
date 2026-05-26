@@ -1,18 +1,12 @@
-FROM alpine:3.22
-#INFO: Install the application dependencies
-#HACK: mariadb of alpine is mariadb-server of debian
-# No need galera ?
-RUN apk add mariadb mariadb-client
-# RUN apk add galera
+FROM debian:bookworm
 
-#NOTE: Docker script convention
+RUN apt-get update && apt-get install -y mariadb-server && rm -rf /var/lib/apt/lists/* \
+	&& mkdir -p /run/mysqld \
+	&& chown -R mysql:mysql /run/mysqld \
+	&& chmod 1777 /run/mysqld
+
 COPY healthcheck.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/healthcheck.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/healthcheck.sh /usr/local/bin/docker-entrypoint.sh
 
-#NOTE: First command to launch
 ENTRYPOINT ["docker-entrypoint.sh"]
-
-#NOTE: Arguments
-# CMD [""]
