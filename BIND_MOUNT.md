@@ -71,6 +71,32 @@ Docker lui-même appelle ça un **"named bind mount"** — une catégorie hybrid
 
 ---
 
+## Piège : VirtualBox synced folder (vboxsf)
+
+Si la VM est provisionnée via Vagrant avec `config.vm.synced_folder`, le dossier partagé (ex. `/shared`) utilise le filesystem `vboxsf` — qui **ne supporte pas `chown`**.
+
+Symptôme : `chown` retourne 0 (succès apparent) mais ne change rien. Les containers qui font un `chown` sur leur datadir au démarrage (MariaDB, etc.) échouent avec `Permission denied` car le process applicatif (ex. `mysql`, UID 999) ne peut pas écrire dans un répertoire toujours owned by root.
+
+Vérification rapide depuis la VM :
+```sh
+touch /shared/test && chown 999 /shared/test && ls -la /shared/test
+# Si owner reste inchangé → vboxsf, chown no-op
+```
+
+**Fix** : placer `HOST_DATA_PATH` sur le filesystem natif de la VM, hors du dossier partagé :
+```
+HOST_DATA_PATH=/home/vagrant/data/db
+```
+
+Et créer le répertoire avant `docker compose up` (ex. dans le Makefile) :
+```makefile
+_create_data_dirs:
+    mkdir -p /home/vagrant/data/db
+    mkdir -p /home/vagrant/data/wp
+```
+
+---
+
 ## Conclusion
 
 | Critère | Bind mount pur | Mon named volume |
