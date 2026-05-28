@@ -67,6 +67,11 @@ volumes:
   DB:
     name: DB
     driver: local
+    driver_opts:
+      type: none
+      device: ${HOST_DATA_PATH}
+      o: bind
+
 
 
 secrets:
