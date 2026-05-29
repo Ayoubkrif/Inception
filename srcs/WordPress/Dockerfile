@@ -17,7 +17,15 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 	chmod +x wp-cli.phar; \
 	mv wp-cli.phar /usr/local/bin/wp
 
+RUN adduser -S -G www-data www-data 2>/dev/null || true
+RUN mkdir -p /var/www/html && chown -R www-data:www-data /var/www/html
+WORKDIR /var/www/html
+
+#FIX: Allowed memory size exhausted during wp-cli extraction
+RUN echo "memory_limit=256M" >> /etc/php83/php.ini
+
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
+USER www-data
