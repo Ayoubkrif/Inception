@@ -1,27 +1,43 @@
 #!/bin/sh
+set -e
 
-wp --info
-wp core download --path=$WP_FILES_LOCATION # convention: répertoire racine des fichiers sources web
+# convention: /var/www/html = racine des fichiers sources web
+wp core download --path=$WP_FILES_LOCATION --allow-root
 
-#NOTE: II Créer wp-config.php en pointant vers ton container MariaDB
-# ? root_password=$(cat /run/secrets/mariadb_root_password) ?
+# II — wp-config.php → pointe vers le container MariaDB
 MYSQL_PASSWORD=$(cat /run/secrets/mariadb_password)
 wp config create \
   --dbname=$MYSQL_DATABASE \
   --dbuser=$MYSQL_USER \
   --dbpass=$MYSQL_PASSWORD \
   --dbhost=MariaDB \
-  --path=$WP_FILES_LOCATION
+  --path=$WP_FILES_LOCATION \
+  --allow-root \
+  --force
 
-#NOTE: III NO wp db create — MariaDB already created
+# III — NO wp db create, MariaDB provisionne déjà la DB
 
-#NOTE: IV wp install
-# wp core install \
-#   --url="?" \
-#   --title="demo" \
-#   --admin_user="wp_admin" \
-#   --admin_password="adm" \
-#   --admin_email="mail@mail.mail" \
-#   --path=$WP_FILES_LOCATION
+# IV — Installation WordPress (idempotent : skip si les tables existent déjà)
+if ! wp core is-installed --path=$WP_FILES_LOCATION --allow-root 2>/dev/null; then
+  WP_ADMIN_PASS=$(cat /run/secrets/wp_admin_password)
+  wp core install \
+    --url=https://$DOMAIN_NAME \
+    --title="$WP_TITLE" \
+    --admin_user=$WP_ADMIN_USER \
+    --admin_password=$WP_ADMIN_PASS \
+    --admin_email=$WP_ADMIN_EMAIL \
+    --skip-email \
+    --path=$WP_FILES_LOCATION \
+    --allow-root
 
-tail -f /dev/null
+  # V — Deuxième utilisateur (sujet : 2 users, pas admin dans le login)
+  WP_USER_PASS=$(cat /run/secrets/wp_user_password)
+  wp user create $WP_USER $WP_USER_EMAIL \
+    --user_pass=$WP_USER_PASS \
+    --role=author \
+    --path=$WP_FILES_LOCATION \
+    --allow-root
+fi
+
+# php-fpm en PID 1 (tail -f /dev/null interdit par le sujet)
+exec php-fpm83 -F
