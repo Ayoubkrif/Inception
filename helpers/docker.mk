@@ -36,6 +36,19 @@ volume_kill: # remove all docker volumes
 
 kill: container_kill image_kill volume_kill ls # remove all containers, images and volumes
 
+logs: # logs des 3 services (nginx, wordpress, mariadb)
+	docker compose -f srcs/docker-compose.yml logs -f NGINX WordPress MariaDB
+
+logs_nginx: # logs du service nginx
+	docker compose -f srcs/docker-compose.yml logs -f NGINX
+
+logs_wordpress: # logs du service wordpress
+	docker compose -f srcs/docker-compose.yml logs -f WordPress
+
+logs_mariadb: # logs du service mariadb
+	docker compose -f srcs/docker-compose.yml logs -f MariaDB
+
 .PHONY: compose compose_verbose compose_debug clean \
         image_ls container_ls volume_ls ls \
-        image_kill container_kill volume_kill kill
+        image_kill container_kill volume_kill kill \
+        logs logs_nginx logs_wordpress logs_mariadb
