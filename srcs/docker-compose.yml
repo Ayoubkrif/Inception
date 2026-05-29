@@ -73,6 +73,8 @@ services:
     secrets:
         - mariadb_root_password
         - mariadb_password
+        - wp_admin_password
+        - wp_user_password
 
 volumes:
   DB:
@@ -90,3 +92,7 @@ secrets:
     file: ./mariadb_root_password.secret
   mariadb_password:
     file: ./mariadb_password.secret
+  wp_admin_password:
+    file: ./wp_admin_password.secret
+  wp_user_password:
+    file: ./wp_user_password.secret
