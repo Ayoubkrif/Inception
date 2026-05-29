@@ -20,4 +20,10 @@ COPY healthcheck.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/healthcheck.sh /usr/local/bin/docker-entrypoint.sh
 
+# Sends COM_PING via Unix socket as a no-privilege 'healthcheck'@localhost user.
+# WordPress depends_on this check (service_healthy) so it never starts before MariaDB is ready.
+# start-period=30s gives time for first-run provisioning (mariadb-install-db + temp server).
+HEALTHCHECK --interval=1s --timeout=3s --start-period=30s --retries=15 \
+    CMD healthcheck.sh
+
 ENTRYPOINT ["docker-entrypoint.sh"]

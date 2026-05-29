@@ -1,3 +1,2 @@
 #!/bin/sh
-
-echo 
+mariadb-admin --socket=/run/mysqld/mysqld.sock --user=healthcheck ping --silent

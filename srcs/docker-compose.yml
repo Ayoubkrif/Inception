@@ -64,6 +64,10 @@ services:
     env_file:
       - .env
 
+    depends_on:
+      MariaDB:
+        condition: service_healthy
+
     networks:
         - docker_network
     secrets:
