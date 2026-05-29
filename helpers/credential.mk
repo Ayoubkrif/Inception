@@ -67,6 +67,8 @@ secrets: # build passwd
 		echo "$$userpass" > mariadb_password.secret; \
 		echo "$$wpadminpass" > wp_admin_password.secret; \
 		echo "$$wpuserpass" > wp_user_password.secret; \
+		echo ""; \
+		echo "$(YELLOW)⚠ Secrets modifiés — lance 'make restart' pour re-provisionner la DB$(RESET)"; \
 	else \
 		printf "secrets already exist — écraser ? [y/N] : "; \
 		read confirm; \
