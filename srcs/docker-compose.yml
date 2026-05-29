@@ -39,8 +39,6 @@ services:
     container_name: MariaDB
     env_file:
       - .env
-    # ports:
-    #   -
     networks:
         - docker_network
 
