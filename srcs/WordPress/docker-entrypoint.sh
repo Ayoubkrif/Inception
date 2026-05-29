@@ -1,10 +1,27 @@
 #!/bin/sh
 
 wp --info
-#FIX: PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 36864 bytes) in phar:///usr/local/bin/wp/vendor/wp-cli/wp-cli/php/WP_CLI/Extractor.php on line 100
-#NOTE: Increase memory limit for extraction
-echo "memory_limit=256M" >> /etc/php83/php.ini
-# Tuto quick start wp
-wp core download --path=wpclidemo.dev
+wp core download --path=$WP_FILES_LOCATION # convention: répertoire racine des fichiers sources web
+
+#NOTE: II Créer wp-config.php en pointant vers ton container MariaDB
+# ? root_password=$(cat /run/secrets/mariadb_root_password) ?
+MYSQL_PASSWORD=$(cat /run/secrets/mariadb_password)
+wp config create \
+  --dbname=$MYSQL_DATABASE \
+  --dbuser=$MYSQL_USER \
+  --dbpass=$MYSQL_PASSWORD \
+  --dbhost=MariaDB \
+  --path=$WP_FILES_LOCATION
+
+#NOTE: III NO wp db create — MariaDB already created
+
+#NOTE: IV wp install
+# wp core install \
+#   --url="?" \
+#   --title="demo" \
+#   --admin_user="wp_admin" \
+#   --admin_password="adm" \
+#   --admin_email="mail@mail.mail" \
+#   --path=$WP_FILES_LOCATION
 
 tail -f /dev/null
