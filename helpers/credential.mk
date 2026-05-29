@@ -16,11 +16,11 @@ env: # build .env
 	@cd srcs/ && if [ ! -f .env ]; then \
 		read -p "(DB_NAME) : " dbname; \
 		read -p "(USER_LOGIN) : " login; \
-		read -p "(DB_PATH) : " dbpath; \
 		\
 		echo "MYSQL_DATABASE=$$dbname" > .env; \
 		echo "MYSQL_USER=$$login" >> .env; \
-		echo "HOST_DATA_PATH=$$dbpath" >> .env; \
+		echo "HOST_DATA_PATH=/home/vagrant/DB" >> .env; \
+		echo "WP_FILES_LOCATION=/var/www/html" >> .env; \
 	else \
 		echo ".env already exist"; \
 	fi
