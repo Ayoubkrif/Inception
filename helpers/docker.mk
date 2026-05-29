@@ -36,19 +36,26 @@ volume_kill: # remove all docker volumes
 
 kill: container_kill image_kill volume_kill ls # remove all containers, images and volumes
 
+restart: # wipe everything (containers, images, volumes, build cache, db data) and recompose
+	$(MAKE) kill
+	docker builder prune -f
+	sudo rm -rf $$(grep -E '^HOST_DATA_PATH=' srcs/.env | cut -d= -f2)
+	$(MAKE) compose
+
 logs: # logs des 3 services (nginx, wordpress, mariadb)
-	docker compose -f srcs/docker-compose.yml logs -f NGINX WordPress MariaDB
+	docker compose -f srcs/docker-compose.yml logs -f --timestamps NGINX WordPress MariaDB
 
 logs_nginx: # logs du service nginx
-	docker compose -f srcs/docker-compose.yml logs -f NGINX
+	docker compose -f srcs/docker-compose.yml logs -f --timestamps NGINX
 
 logs_wordpress: # logs du service wordpress
-	docker compose -f srcs/docker-compose.yml logs -f WordPress
+	docker compose -f srcs/docker-compose.yml logs -f --timestamps WordPress
 
 logs_mariadb: # logs du service mariadb
-	docker compose -f srcs/docker-compose.yml logs -f MariaDB
+	docker compose -f srcs/docker-compose.yml logs -f --timestamps MariaDB
 
 .PHONY: compose compose_verbose compose_debug clean \
         image_ls container_ls volume_ls ls \
         image_kill container_kill volume_kill kill \
-        logs logs_nginx logs_wordpress logs_mariadb
+        logs logs_nginx logs_wordpress logs_mariadb \
+        restart
