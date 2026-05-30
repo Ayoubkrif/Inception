@@ -5,7 +5,7 @@ RUN apk add nginx
 COPY conf.conf /etc/nginx/nginx.conf
 #NOTE: Expose conf listen port
 # informe que 443 est ouvert pour tout le monde
-EXPOSE 443
+EXPOSE 80
 
 #NOTE: First command to launch
 ENTRYPOINT ["nginx"]
