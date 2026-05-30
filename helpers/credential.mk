@@ -25,6 +25,7 @@ env: # build .env
 		echo "MYSQL_DATABASE=$$dbname" > .env; \
 		echo "MYSQL_USER=$$login" >> .env; \
 		echo "HOST_DATA_PATH=/home/vagrant/DB" >> .env; \
+		echo "HOST_WP_PATH=/home/vagrant/WP" >> .env; \
 		echo "WP_FILES_LOCATION=/var/www/html" >> .env; \
 		echo "DOMAIN_NAME=aykrifa.42.fr" >> .env; \
 		echo "WP_TITLE=$$wptitle" >> .env; \

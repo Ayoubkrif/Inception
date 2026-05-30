@@ -3,6 +3,7 @@
 # **************************************************************************** #
 compose: # docker compose
 	mkdir -p $$(grep -E '^HOST_DATA_PATH=' srcs/.env | cut -d= -f2)
+	mkdir -p $$(grep -E '^HOST_WP_PATH=' srcs/.env | cut -d= -f2)
 	docker compose -f srcs/docker-compose.yml up -d
 
 compose_verbose: # docker compose verbose

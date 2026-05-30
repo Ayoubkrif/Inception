@@ -7,26 +7,30 @@ networks:
 
 services:
   NGINX:
-    # docker build -t CONTEXT IMAGE_NAME
+  #NOTE: Build
     build: NGINX/
     pull_policy: build
     image: nginx
 
-    # docker run --name CONTAINER_NAME -p PORT_HOST:PORT_GUEST IMAGE_NAME
+  #NOTE: Run
     container_name: NGINX
-    # env_file:
-    #   - .env
+
+    env_file:
+      - .env
+
     ports:
       - "80:80"
+
     networks:
         - docker_network
-    # monte le volume pour avoir les pages a distribuer
-    #volumes:
-    # - wordpress_files:/var/www/html
+
+    volumes:
+        - WP:/var/www/html
 
     # depends_on:
     #   wordpress:
     #     condition: service_healthy
+
     restart: unless-stopped
 
   MariaDB:
@@ -44,7 +48,7 @@ services:
         - docker_network
 
     volumes:
-        - DB:/var/lib/mysql/
+        - DB:/var/lib/mysql
 
     secrets:
         - mariadb_root_password
@@ -70,6 +74,10 @@ services:
 
     networks:
         - docker_network
+
+    volumes:
+        - WP:/var/www/html
+
     secrets:
         - mariadb_root_password
         - mariadb_password
@@ -85,7 +93,13 @@ volumes:
       device: ${HOST_DATA_PATH}
       o: bind
 
-
+  WP:
+    name: WP
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOST_WP_PATH}
+      o: bind
 
 secrets:
   mariadb_root_password:
