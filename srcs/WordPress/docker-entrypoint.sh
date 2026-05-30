@@ -2,7 +2,9 @@
 set -e
 
 # convention: /var/www/html = racine des fichiers sources web
-wp core download --path=$WP_FILES_LOCATION --allow-root
+if [ ! -f "$WP_FILES_LOCATION/wp-login.php" ]; then
+  wp core download --path=$WP_FILES_LOCATION --allow-root
+fi
 
 # II — wp-config.php → pointe vers le container MariaDB
 MYSQL_PASSWORD=$(cat /run/secrets/mariadb_password)
