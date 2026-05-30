@@ -24,6 +24,8 @@ WORKDIR /var/www/html
 #FIX: Allowed memory size exhausted during wp-cli extraction
 RUN echo "memory_limit=256M" >> /etc/php83/php.ini
 
+RUN sed -i 's/listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/' /etc/php83/php-fpm.d/www.conf
+
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
