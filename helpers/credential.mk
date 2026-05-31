@@ -14,25 +14,28 @@ reset: # reset env and secret
 
 env: # build .env
 	@cd srcs/ && if [ ! -f .env ]; then \
-		read -p "(DB_NAME) : " dbname; \
-		read -p "(USER_LOGIN) : " login; \
-		read -p "(WP_TITLE) : " wptitle; \
-		read -p "(WP_ADMIN_USER, pas admin/administrator) : " wpadmin; \
-		read -p "(WP_ADMIN_EMAIL) : " wpadminemail; \
-		read -p "(WP_USER) : " wpuser; \
-		read -p "(WP_USER_EMAIL) : " wpuseremail; \
+		read -p "MYSQL_DATABASE=" dbname; \
+		read -p "MYSQL_USER=" login; \
+		\
+		read -p "WP_TITLE=" wptitle; \
+		read -p "(pas admin/administrator) WP_ADMIN_USER=" wpadmin; \
+		read -p "WP_ADMIN_EMAIL=" wpadminemail; \
+		read -p "WP_USER=" wpuser; \
+		read -p "WP_USER_EMAIL=" wpuseremail; \
 		\
 		echo "MYSQL_DATABASE=$$dbname" > .env; \
 		echo "MYSQL_USER=$$login" >> .env; \
-		echo "HOST_DATA_PATH=/home/vagrant/DB" >> .env; \
-		echo "HOST_WP_PATH=/home/vagrant/WP" >> .env; \
-		echo "WP_FILES_LOCATION=/var/www/html" >> .env; \
-		echo "DOMAIN_NAME=aykrifa.42.fr" >> .env; \
+		\
 		echo "WP_TITLE=$$wptitle" >> .env; \
 		echo "WP_ADMIN_USER=$$wpadmin" >> .env; \
 		echo "WP_ADMIN_EMAIL=$$wpadminemail" >> .env; \
 		echo "WP_USER=$$wpuser" >> .env; \
 		echo "WP_USER_EMAIL=$$wpuseremail" >> .env; \
+		\
+		echo "HOST_DATA_PATH=/home/vagrant/DB" >> .env; \
+		echo "HOST_WP_PATH=/home/vagrant/WP" >> .env; \
+		echo "WP_FILES_LOCATION=/var/www/html" >> .env; \
+		echo "DOMAIN_NAME=aykrifa.42.fr" >> .env; \
 	else \
 		printf ".env already exist — écraser ? [y/N] : "; \
 		read confirm; \
