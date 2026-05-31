@@ -84,6 +84,8 @@ services:
         - wp_admin_password
         - wp_user_password
 
+    restart: unless-stopped
+
 volumes:
   DB:
     name: DB
