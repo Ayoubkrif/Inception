@@ -1,10 +1,11 @@
 FROM alpine:3.22
 #NOTE: Install the application dependencies
 RUN apk add nginx
-#NOTE: Copy conf in default conf folder
+
+#NOTE: Provide conf certificate and key
 COPY conf.conf /etc/nginx/nginx.conf
+
 #NOTE: Expose conf listen port
-# informe que 443 est ouvert pour tout le monde
 EXPOSE 80
 
 #NOTE: First command to launch
