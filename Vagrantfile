@@ -18,24 +18,21 @@ Vagrant.configure("2") do |config|
 	## Réseau privé avec IP statique
 	config.vm.network "private_network", ip: "192.168.56.10"
 
-	## Dossier synchronisé
-	config.vm.synced_folder ".", "/shared", disabled: false
+	##INFO: Sync Folder
+	config.vm.synced_folder ".", "/shared", disabled: false, mount_options: ["dmode=775", "fmode=664"]
 
 	## Configuration pour VirtualBox
 	config.vm.provider "virtualbox" do |vb|
-		vb.memory = "1024"
-		vb.cpus = 1
+		vb.memory = "2048"
+		vb.cpus = 2
 		vb.name = "Inception"
 	end
-	# Create a forwarded port mapping which allows access to a specific port
+	#INFO: Create a forwarded port mapping which allows access to a specific port
 	# within the machine from a port on the host machine and only allow access
 	# via 127.0.0.1 to disable public access
-	# config.vm.network "forwarded_port", guest: 0000, host: 0000, host_ip: "127.0.0.1"
-    config.vm.network "forwarded_port", guest: 443, host: 4430, host_ip: "127.0.0.1", id: "nginx SSL"
-    config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1", id: "nginx HTTP"
-	# config.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "127.0.0.1", id: "SSH"
+	# config.vm.network "forwarded_port_name", guest: XXXX, host: XXXX, host_ip: "X.X.X.X"
 
-	# Provisionnement
+	#INFO: provision script
 	config.vm.provision "shell", path: "provision.sh"
 end
 
