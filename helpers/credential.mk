@@ -84,8 +84,8 @@ secrets: # build passwd
 
 certificate: # build self signed key/certificate for nginx
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-		-keyout srcs/NGINX/key.pem \
-		-out srcs/NGINX/cert.pem \
+		-keyout srcs/key.pem.secret \
+		-out srcs/cert.pem.secret \
 		-subj "/CN=aykrifa.42.fr"
 
 .PHONY: setup env secrets

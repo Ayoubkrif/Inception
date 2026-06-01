@@ -19,7 +19,7 @@ services:
       - .env
 
     ports:
-      - "80:80"
+      - "443:443"
 
     networks:
         - docker_network
@@ -30,6 +30,10 @@ services:
     # depends_on:
     #   wordpress:
     #     condition: service_healthy
+
+    secrets:
+        - certificate
+        - key
 
     restart: unless-stopped
 
@@ -108,7 +112,13 @@ secrets:
     file: ./mariadb_root_password.secret
   mariadb_password:
     file: ./mariadb_password.secret
+  
   wp_admin_password:
     file: ./wp_admin_password.secret
   wp_user_password:
     file: ./wp_user_password.secret
+
+  certificate:
+    file: ./cert.pem.secret
+  key:
+    file: ./key.pem.secret
