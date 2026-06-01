@@ -1,6 +1,12 @@
-vm*
+# vm build
 Inception/
 .vagrant/
+
+# credentials
 *.secret
 .env
-DB/
+
+# vbox logs
+*.log
+
+.obsidian
