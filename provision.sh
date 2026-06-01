@@ -19,10 +19,10 @@ echo "aykrifa ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 addgroup aykrifa docker
 addgroup aykrifa vagrant
 
-#INFO: Résolution locale du domaine — aykrifa.42.fr pointe vers localhost dans la VM
+#INFO: local dns for wordpress browsing — aykrifa.42.fr --> localhost
 echo "127.0.0.1 aykrifa.42.fr" >> /etc/hosts
 
-#INFO: Firefox pour tester le site depuis la VM via X11 forwarding — `make browser`
+#INFO: Firefox for X11 ssh forwarding — `make browser`
 apk add firefox xauth ttf-dejavu
 
 #HACK: copy vagrant ssh key to aykrifa — même clé privée que vagrant pour `make ssh`

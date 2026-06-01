@@ -41,5 +41,5 @@ if ! wp core is-installed --path=$WP_FILES_LOCATION --allow-root 2>/dev/null; th
     --allow-root
 fi
 
-# php-fpm en PID 1 (tail -f /dev/null interdit par le sujet)
+# php-fpm foreground
 exec php-fpm83 -F
