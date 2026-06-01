@@ -24,7 +24,7 @@ wp config create \
 if ! wp core is-installed --path=$WP_FILES_LOCATION --allow-root 2>/dev/null; then
   WP_ADMIN_PASS=$(cat /run/secrets/wp_admin_password)
   wp core install \
-    --url=http://127.0.0.1:8080 \
+    --url=http://127.0.0.1:4430 \
     --title="$WP_TITLE" \
     --admin_user=$WP_ADMIN_USER \
     --admin_password=$WP_ADMIN_PASS \
