@@ -32,15 +32,15 @@ env: # build .env
 		echo "WP_USER=$$wpuser" >> .env; \
 		echo "WP_USER_EMAIL=$$wpuseremail" >> .env; \
 		\
-		echo "HOST_DATA_PATH=/home/vagrant/DB" >> .env; \
-		echo "HOST_WP_PATH=/home/vagrant/WP" >> .env; \
+		echo "HOST_DATA_PATH=$$HOME/DB" >> .env; \
+		echo "HOST_WP_PATH=$$HOME/WP" >> .env; \
 		echo "WP_FILES_LOCATION=/var/www/html" >> .env; \
 		echo "DOMAIN_NAME=aykrifa.42.fr" >> .env; \
 	else \
 		printf ".env already exist — écraser ? [y/N] : "; \
 		read confirm; \
 		if [ "$$confirm" = "y" ] || [ "$$confirm" = "Y" ]; then \
-			rm .env; \
+			rm .env || { echo "Permission denied — lance: sudo rm srcs/.env"; exit 1; }; \
 			$(MAKE) -C $(CURDIR) env; \
 		fi; \
 	fi

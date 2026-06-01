@@ -85,14 +85,14 @@ touch /shared/test && chown 999 /shared/test && ls -la /shared/test
 
 **Fix** : placer `HOST_DATA_PATH` sur le filesystem natif de la VM, hors du dossier partagé :
 ```
-HOST_DATA_PATH=/home/vagrant/data/db
+HOST_DATA_PATH=~/data/db
 ```
 
 Et créer le répertoire avant `docker compose up` (ex. dans le Makefile) :
 ```makefile
 _create_data_dirs:
-    mkdir -p /home/vagrant/data/db
-    mkdir -p /home/vagrant/data/wp
+    mkdir -p ~/data/db
+    mkdir -p ~/data/wp
 ```
 
 ---
