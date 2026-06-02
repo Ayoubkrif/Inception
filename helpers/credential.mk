@@ -7,10 +7,11 @@ GREEN        = \033[0;32m
 YELLOW       = \033[0;33m
 RESET        = \033[0m
 
-reset: # reset env and secret
+provision: env secrets certificate # setup complet : env + secrets + certificat
+
+reset: # reset env, secrets and certificate
 	cd srcs/ && rm -rf .env *.secret
-	make env
-	make secrets
+	$(MAKE) provision
 
 env: # build .env
 	@cd srcs/ && if [ ! -f .env ]; then \
@@ -82,10 +83,14 @@ secrets: # build passwd
 		fi; \
 	fi
 
+# BONUS
+envbonus: # append bonus env vars to .env
+# END OF BONUS
+
 certificate: # build self signed key/certificate for nginx
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 		-keyout srcs/key.pem.secret \
 		-out srcs/cert.pem.secret \
 		-subj "/CN=aykrifa.42.fr"
 
-.PHONY: setup env secrets
+.PHONY: provision setup env secrets envbonus

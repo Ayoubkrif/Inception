@@ -4,6 +4,24 @@
 
 Projet Inception de l'école 42. Infrastructure Docker (NGINX, WordPress, MariaDB) via docker-compose.
 
+## Bonus — règle de marquage
+
+Le service webserv est un **bonus** (static website, Chapter VIII). Toute modification apportée à un fichier du repo qui est **en dehors du service bonus lui-même** (`srcs/WebServ/`) doit être encadrée par des commentaires de délimitation :
+
+```
+# BONUS
+<contenu ajouté pour le bonus>
+# END OF BONUS
+```
+
+Cela s'applique à tout fichier partagé : `docker-compose.yml`, `Makefile`, configs NGINX, scripts, etc. Sauf mention contraire explicite, cette règle est toujours active.
+
+## Sources & références
+
+- **Interdire** toute ressource issue d'autres projets Inception (repos étudiants, corrections, exemples Inception trouvés en ligne).
+- Privilégier dans l'ordre : documentation officielle des providers (Alpine, Debian, MariaDB, WordPress, nginx…), Dockerfiles open source de référence, RFC/specs, tutoriels de production réels.
+- L'objectif est une implémentation proche de la réalité — pas un copier-coller de ce que font les autres étudiants 42.
+
 ## Règles de collaboration
 
 - L'étudiant veut faire le maximum par lui-même. Ne pas tout implémenter d'un coup.
@@ -41,7 +59,7 @@ Projet Inception de l'école 42. Infrastructure Docker (NGINX, WordPress, MariaD
 ## Contraintes du sujet
 
 - Bind mounts interdits — mais implémenter un bind mount à terme pour montrer la différence avec un vrai volume
-- Images basées sur Alpine ou Debian (avant-dernière version stable)
+- Images basées sur Alpine ou Debian (avant-dernière version stable) : **`alpine:3.22`** (courante = 3.23) ou **`debian:bookworm`** (courante = trixie)
 - Pas d'images toutes faites (pas de pull DockerHub sauf alpine/debian)
 - Chaque service dans son propre container
 - Réseau bridge custom obligatoire
