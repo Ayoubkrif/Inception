@@ -27,9 +27,9 @@ services:
     volumes:
         - WP:/var/www/html
 
-    # depends_on:
-    #   wordpress:
-    #     condition: service_healthy
+    depends_on:
+      WordPress:
+        condition: service_started
 
     secrets:
         - certificate
@@ -89,6 +89,27 @@ services:
         - wp_user_password
 
     restart: unless-stopped
+
+# BONUS
+  WebServ:
+    build: WebServ/
+    pull_policy: build
+    image: webserv
+
+    container_name: WebServ
+
+    networks:
+        - docker_network
+
+    healthcheck:
+      test: ["CMD", "curl", "-s", "-o", "/dev/null", "-X", "UNKNOWN", "http://localhost:80/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+    restart: unless-stopped
+# END OF BONUS
 
 volumes:
   DB:
