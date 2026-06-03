@@ -1,7 +1,12 @@
+# **************************************************************************** #
+#    docker-compose.yml                                 :+:      :+:    :+:    #
+#    By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+         #
+#    Created: 2026/06/03 17:27:24 by aykrifa           #+#    #+#              #
+# **************************************************************************** #
+
 networks:
   docker_network:
     name: inception
-    # https://docs.docker.com/engine/network/drivers/
     driver: bridge 
 
 
@@ -14,80 +19,59 @@ services:
 
   #NOTE: Run
     container_name: NGINX
-
     env_file:
       - .env
-
     ports:
       - "443:443"
-
     networks:
         - docker_network
-
     volumes:
         - WP:/var/www/html
-
     depends_on:
       WordPress:
         condition: service_started
-
     secrets:
         - certificate
         - key
-
     restart: unless-stopped
 
   MariaDB:
-    # docker build -t CONTEXT IMAGE_NAME
     build: MariaDB/
     pull_policy: build
     image: mariadb:inception
 
-    # docker run --name CONTAINER_NAME -p PORT_HOST:PORT_GUEST IMAGE_NAME
     container_name: MariaDB
     env_file:
       - .env
-
     networks:
         - docker_network
-
     volumes:
         - DB:/var/lib/mysql
-
     secrets:
         - mariadb_root_password
         - mariadb_password
-
     restart: unless-stopped
 
   WordPress:
-    # docker build -t CONTEXT IMAGE_NAME
     build: WordPress/
     pull_policy: build
     image: wordpress:inception
 
-    # docker run --name CONTAINER_NAME -p PORT_HOST:PORT_GUEST IMAGE_NAME
     container_name: WordPress
-
     env_file:
       - .env
-
     depends_on:
       MariaDB:
         condition: service_healthy
-
     networks:
         - docker_network
-
     volumes:
         - WP:/var/www/html
-
     secrets:
         - mariadb_root_password
         - mariadb_password
         - wp_admin_password
         - wp_user_password
-
     restart: unless-stopped
 
 # BONUS
@@ -97,17 +81,13 @@ services:
     image: portainer:inception
 
     container_name: Portainer
-
     ports:
       - "9443:9443"
-
     networks:
       - docker_network
-
     volumes:
       - portainer_data:/data
       - /var/run/docker.sock:/var/run/docker.sock
-
     restart: unless-stopped
 
   WebServ:
@@ -116,10 +96,8 @@ services:
     image: webserv:inception
 
     container_name: WebServ
-
     networks:
         - docker_network
-
     healthcheck:
       test: ["CMD", "curl", "-sf", "--http1.1", "http://localhost:80/"]
       interval: 10s
@@ -139,6 +117,7 @@ services:
     depends_on:
       - MariaDB
     restart: unless-stopped
+
 # END OF BONUS
 
 volumes:
