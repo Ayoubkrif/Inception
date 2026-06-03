@@ -126,7 +126,18 @@ services:
       timeout: 5s
       retries: 3
       start_period: 5s
+    restart: unless-stopped
 
+  Adminer:
+    build: Adminer/
+    pull_policy: build
+    image: adminer:inception
+    
+    container_name: Adminer
+    networks:
+      - docker_network
+    depends_on:
+      - MariaDB
     restart: unless-stopped
 # END OF BONUS
 
