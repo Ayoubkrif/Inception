@@ -93,4 +93,4 @@ certificate: # build self signed key/certificate for nginx
 		-out srcs/cert.pem.secret \
 		-subj "/CN=aykrifa.42.fr"
 
-.PHONY: provision setup env secrets envbonus
+.PHONY: provision reset env secrets envbonus certificate

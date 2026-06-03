@@ -23,9 +23,9 @@ Vagrant.configure("2") do |config|
 
 	## Configuration pour VirtualBox
 	config.vm.provider "virtualbox" do |vb|
-		vb.memory = "2048"
-		vb.cpus = 2
-		vb.name = "Inception"
+		vb.memory = "4096"
+		vb.cpus = 4
+		vb.name = ENV['BOX_NAME'] || "Inception_VBox"
 	end
 	#INFO: Create a forwarded port mapping which allows access to a specific port
 	# within the machine from a port on the host machine and only allow access

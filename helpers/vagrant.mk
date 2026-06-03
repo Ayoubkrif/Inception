@@ -1,9 +1,12 @@
 # **************************************************************************** #
 #                          VIRTUAL MACHINE                                     #
 # **************************************************************************** #
-vm: # build vm with vagrant
+
+BOX_NAME = Inception_VBox
+
+$(BOX_NAME): # build vm with vagrant
 	VBoxManage setproperty machinefolder $$(pwd)
-	vagrant up
+	BOX_NAME=$(BOX_NAME) vagrant up
 	$(MAKE) ssh
 
 ssh: # se connecter en aykrifa dans la VM
@@ -22,6 +25,7 @@ destroy: # vagrant destroy properly
 	vagrant destroy -f
 
 rebuild: destroy # rebuild destroy + vm
-	$(MAKE) vm
+	rm -rf $(BOX_NAME)
+	$(MAKE) $(BOX_NAME)
 
-.PHONY: vm, destroy, rebuild
+.PHONY: ssh browser destroy rebuild
