@@ -1,11 +1,14 @@
+FROM alpine:3.22 AS builder
+
+#NOTE: Build dependencies, clone and compile
+RUN apk add --no-cache git make g++ curl \
+    && git clone --depth=1 --branch inception https://github.com/Ayoubkrif/webserv.git /webserv \
+    && cd /webserv && make
+
+#HACK: clean for lightweight images — multi-stage: only the binary survives
 FROM alpine:3.22
 
-#NOTE: Build dependencies
-RUN apk add --no-cache git make g++ curl
-
-#NOTE: Clone and compile
-RUN git clone --depth=1 --branch inception https://github.com/Ayoubkrif/webserv.git /webserv
-RUN cd /webserv && make
+COPY --from=builder /webserv/WebServ /webserv/WebServ
 
 #NOTE: Config and static site
 COPY webserv.conf /webserv/webserv.conf
