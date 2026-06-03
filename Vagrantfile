@@ -34,5 +34,11 @@ Vagrant.configure("2") do |config|
 
 	#INFO: provision script
 	config.vm.provision "shell", path: "provision.sh"
+
+	#FIX: synced folder stop desapear after reboot
+	config.vm.provision "shell", run: "always", inline: <<-SHELL
+		rc-update add virtualbox-guest-additions default 2>/dev/null || true
+		rc-service virtualbox-guest-additions start 2>/dev/null || true
+	SHELL
 end
 
