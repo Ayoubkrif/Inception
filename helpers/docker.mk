@@ -1,19 +1,26 @@
 # **************************************************************************** #
 #                            DOCKER COMMAND                                    #
 # **************************************************************************** #
+BUILD_DIR    = $(HOME)/build
+COMPOSE_FILE = $(BUILD_DIR)/docker-compose.yml
+
+move: # copie srcs dans ~/build pour que secrets et Dockerfiles survivent au reboot
+	mkdir -p $(BUILD_DIR)
+	cp -r srcs/. $(BUILD_DIR)/
+
 compose: # docker compose
-	mkdir -p $$(grep -E '^HOST_DATA_PATH=' srcs/.env | cut -d= -f2)
-	mkdir -p $$(grep -E '^HOST_WP_PATH=' srcs/.env | cut -d= -f2)
-	docker compose -f srcs/docker-compose.yml up -d
+	mkdir -p $$(grep -E '^HOST_DATA_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
+	mkdir -p $$(grep -E '^HOST_WP_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
+	docker compose -f $(COMPOSE_FILE) up -d
 
 compose_verbose: # docker compose verbose
-	docker compose -v -f srcs/docker-compose.yml up -d
+	docker compose -v -f $(COMPOSE_FILE) up -d
 
 compose_debug: # show docker compose variable expanditure
-	docker compose -f srcs/docker-compose.yml config
+	docker compose -f $(COMPOSE_FILE) config
 
 clean: # docker compose down
-	docker compose down -v
+	docker compose -f $(COMPOSE_FILE) down -v
 
 image_ls: # list all docker images
 	docker images
@@ -40,20 +47,20 @@ kill: container_kill image_kill volume_kill ls # remove all containers, images a
 restart: # wipe everything (containers, images, volumes, build cache, db data) and recompose
 	$(MAKE) kill
 	docker builder prune -f
-	sudo rm -rf $$(grep -E '^HOST_DATA_PATH=' srcs/.env | cut -d= -f2)
+	sudo rm -rf $$(grep -E '^HOST_DATA_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
 	$(MAKE) compose
 
 logs: # logs des 3 services (nginx, wordpress, mariadb)
-	docker compose -f srcs/docker-compose.yml logs -f --timestamps NGINX WordPress MariaDB
+	docker compose -f $(COMPOSE_FILE) logs -f --timestamps NGINX WordPress MariaDB
 
 logs_nginx: # logs du service nginx
-	docker compose -f srcs/docker-compose.yml logs -f --timestamps NGINX
+	docker compose -f $(COMPOSE_FILE) logs -f --timestamps NGINX
 
 logs_wordpress: # logs du service wordpress
-	docker compose -f srcs/docker-compose.yml logs -f --timestamps WordPress
+	docker compose -f $(COMPOSE_FILE) logs -f --timestamps WordPress
 
 logs_mariadb: # logs du service mariadb
-	docker compose -f srcs/docker-compose.yml logs -f --timestamps MariaDB
+	docker compose -f $(COMPOSE_FILE) logs -f --timestamps MariaDB
 
 .PHONY: compose compose_verbose compose_debug clean \
         image_ls container_ls volume_ls ls \
