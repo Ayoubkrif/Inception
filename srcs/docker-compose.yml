@@ -99,7 +99,7 @@ services:
     networks:
         - docker_network
     healthcheck:
-      test: ["CMD", "curl", "-sf", "--http1.1", "http://localhost:80/"]
+      test: ["CMD", "curl", "-s", "--http1.1", "http://localhost:80/"]
       interval: 10s
       timeout: 5s
       retries: 3
