@@ -1,6 +1,9 @@
 FROM debian:bookworm
 
-RUN apt-get update && apt-get install -y mariadb-server && rm -rf /var/lib/apt/lists/* \
+RUN apt-get update && apt-get install -y mariadb-server \
+    #HACK: clean for lightweight images
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /usr/share/doc/* /usr/share/man/* \
 	# ref: MariaDB/mariadb-docker Dockerfile.template l.119-121
 	# apt-get post-install initializes /var/lib/mysql — purge it so the named volume
 	# starts empty: Docker copies image contents into empty volumes on first mount,
@@ -16,9 +19,8 @@ RUN apt-get update && apt-get install -y mariadb-server && rm -rf /var/lib/apt/l
 		| xargs -0 grep -lZE '^(bind-address|log|user\s)' \
 		| xargs -rt -0 sed -Ei 's/^(bind-address|log|user\s)/#&/'
 
-COPY healthcheck.sh /usr/local/bin/
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/healthcheck.sh /usr/local/bin/docker-entrypoint.sh
+COPY --chmod=755 healthcheck.sh /usr/local/bin/
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/
 
 # Sends COM_PING via Unix socket as a no-privilege 'healthcheck'@localhost user.
 # WordPress depends_on this check (service_healthy) so it never starts before MariaDB is ready.
