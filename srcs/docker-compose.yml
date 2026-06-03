@@ -91,6 +91,25 @@ services:
     restart: unless-stopped
 
 # BONUS
+  Portainer:
+    build: Portainer/
+    pull_policy: build
+    image: portainer
+
+    container_name: Portainer
+
+    ports:
+      - "9443:9443"
+
+    networks:
+      - docker_network
+
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    restart: unless-stopped
+
   WebServ:
     build: WebServ/
     pull_policy: build
@@ -112,6 +131,11 @@ services:
 # END OF BONUS
 
 volumes:
+# BONUS
+  portainer_data:
+    name: portainer_data
+# END OF BONUS
+
   DB:
     name: DB
     driver: local
