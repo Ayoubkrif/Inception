@@ -56,7 +56,6 @@ docker_setup_db() {
 		CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
 		CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${password}';
 		GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
-		CREATE USER IF NOT EXISTS 'healthcheck'@'localhost';
 		FLUSH PRIVILEGES;
 	EOSQL
 	mysql_note "Provisioning done"
