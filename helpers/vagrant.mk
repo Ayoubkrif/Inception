@@ -28,4 +28,9 @@ rebuild: destroy # rebuild destroy + vm
 	rm -rf $(BOX_NAME)
 	$(MAKE) $(BOX_NAME)
 
-.PHONY: ssh browser destroy rebuild
+reboot: # éteint et rallume la VM
+	vagrant halt
+	vagrant up
+	$(MAKE) ssh
+
+.PHONY: ssh browser destroy rebuild reboot
