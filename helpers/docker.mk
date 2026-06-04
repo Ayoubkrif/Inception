@@ -50,8 +50,8 @@ restart: # wipe everything (containers, images, volumes, build cache, db data) a
 	sudo rm -rf $$(grep -E '^HOST_DATA_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
 	$(MAKE) compose
 
-logs: # logs des 3 services (nginx, wordpress, mariadb)
-	docker compose -f $(COMPOSE_FILE) logs -f --timestamps NGINX WordPress MariaDB
+logs: # logs de tous les services
+	docker compose -f $(COMPOSE_FILE) logs -f --timestamps NGINX WordPress MariaDB Portainer WebServ Adminer
 
 logs_nginx: # logs du service nginx
 	docker compose -f $(COMPOSE_FILE) logs -f --timestamps NGINX
@@ -61,6 +61,17 @@ logs_wordpress: # logs du service wordpress
 
 logs_mariadb: # logs du service mariadb
 	docker compose -f $(COMPOSE_FILE) logs -f --timestamps MariaDB
+
+# BONUS
+logs_portainer: # logs du service portainer
+	docker compose -f $(COMPOSE_FILE) logs -f --timestamps Portainer
+
+logs_webserv: # logs du service webserv
+	docker compose -f $(COMPOSE_FILE) logs -f --timestamps WebServ
+
+logs_adminer: # logs du service adminer
+	docker compose -f $(COMPOSE_FILE) logs -f --timestamps Adminer
+# END OF BONUS
 
 maria_switch: # swap MariaDB Dockerfile/entrypoint entre debian (actif) et alpine (.tmp)
 	mv srcs/MariaDB/Dockerfile               srcs/MariaDB/Dockerfile.swap
@@ -74,4 +85,5 @@ maria_switch: # swap MariaDB Dockerfile/entrypoint entre debian (actif) et alpin
         image_ls container_ls volume_ls ls \
         image_kill container_kill volume_kill kill \
         logs logs_nginx logs_wordpress logs_mariadb \
+        logs_portainer logs_webserv logs_adminer \
         restart maria_switch
