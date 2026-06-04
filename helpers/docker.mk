@@ -62,8 +62,16 @@ logs_wordpress: # logs du service wordpress
 logs_mariadb: # logs du service mariadb
 	docker compose -f $(COMPOSE_FILE) logs -f --timestamps MariaDB
 
+maria_switch: # swap MariaDB Dockerfile/entrypoint entre debian (actif) et alpine (.tmp)
+	mv srcs/MariaDB/Dockerfile               srcs/MariaDB/Dockerfile.swap
+	mv srcs/MariaDB/Dockerfile.tmp           srcs/MariaDB/Dockerfile
+	mv srcs/MariaDB/Dockerfile.swap          srcs/MariaDB/Dockerfile.tmp
+	mv srcs/MariaDB/docker-entrypoint.sh     srcs/MariaDB/docker-entrypoint.sh.swap
+	mv srcs/MariaDB/docker-entrypoint.sh.tmp srcs/MariaDB/docker-entrypoint.sh
+	mv srcs/MariaDB/docker-entrypoint.sh.swap srcs/MariaDB/docker-entrypoint.sh.tmp
+
 .PHONY: compose compose_verbose compose_debug clean \
         image_ls container_ls volume_ls ls \
         image_kill container_kill volume_kill kill \
         logs logs_nginx logs_wordpress logs_mariadb \
-        restart
+        restart maria_switch
