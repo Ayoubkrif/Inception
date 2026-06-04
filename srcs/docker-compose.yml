@@ -88,6 +88,8 @@ services:
     volumes:
       - portainer_data:/data
       - /var/run/docker.sock:/var/run/docker.sock
+    secrets:
+      - portainer_admin_password
     restart: unless-stopped
 
   WebServ:
@@ -157,3 +159,8 @@ secrets:
     file: ./cert.pem.secret
   key:
     file: ./key.pem.secret
+
+# BONUS
+  portainer_admin_password:
+    file: ./portainer_admin_password.secret
+# END OF BONUS

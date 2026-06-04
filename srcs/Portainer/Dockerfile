@@ -9,6 +9,9 @@ RUN apk add --no-cache curl ca-certificates \
     #HACK: clean for lightweight images
     && apk del curl
 
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 EXPOSE 9443
 
-ENTRYPOINT ["/portainer/portainer"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -9,7 +9,7 @@ RESET        = \033[0m
 
 provision: env secrets certificate # setup complet : env + secrets + certificat
 
-reset: # reset env, secrets and certificate
+reprovision: # reset env, secrets and certificate
 	cd srcs/ && rm -rf .env *.secret
 	$(MAKE) provision
 
@@ -37,10 +37,6 @@ env: # build .env
 		echo "HOST_WP_PATH=$$HOME/WP" >> .env; \
 		echo "WP_FILES_LOCATION=/var/www/html" >> .env; \
 		echo "DOMAIN_NAME=aykrifa.42.fr" >> .env; \
-		# BONUS
-		read -p "PORTAINER_ADMIN_LOGIN=" portainerlogin; \
-		echo "PORTAINER_ADMIN_LOGIN=$$portainerlogin" >> .env; \
-		# END OF BONUS
 	else \
 		printf ".env already exist — écraser ? [y/N] : "; \
 		read confirm; \
@@ -76,14 +72,13 @@ secrets: # build passwd
 		echo "$$userpass" > mariadb_password.secret; \
 		echo "$$wpadminpass" > wp_admin_password.secret; \
 		echo "$$wpuserpass" > wp_user_password.secret; \
-		# BONUS
+		\
 		printf "Mot de passe ADMIN Portainer : "; \
 		stty -echo; \
 		read portainerpass; \
 		stty echo; \
 		echo ""; \
 		echo "$$portainerpass" > portainer_admin_password.secret; \
-		# END OF BONUS
 		echo ""; \
 		echo "$(YELLOW)⚠ Secrets modifiés — lance 'make restart' pour re-provisionner la DB$(RESET)"; \
 	else \
@@ -95,14 +90,10 @@ secrets: # build passwd
 		fi; \
 	fi
 
-# BONUS
-envbonus: # append bonus env vars to .env
-# END OF BONUS
-
 certificate: # build self signed key/certificate for nginx
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 		-keyout srcs/key.pem.secret \
 		-out srcs/cert.pem.secret \
 		-subj "/CN=aykrifa.42.fr"
 
-.PHONY: provision reset env secrets envbonus certificate
+.PHONY: provision reprovision env secrets certificate
