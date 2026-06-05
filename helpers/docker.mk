@@ -8,6 +8,11 @@ move: # copie srcs dans ~/build pour que secrets et Dockerfiles survivent au reb
 	mkdir -p $(BUILD_DIR)
 	cp -r srcs/. $(BUILD_DIR)/
 
+crash: # simule un crash sur tous les containers (kill -9 depuis le host)
+	@for pid in $$(docker inspect --format='{{.State.Pid}}' $$(docker ps -q)); do \
+		sudo kill -9 $$pid 2>/dev/null || true; \
+	done
+
 compose: # docker compose
 	mkdir -p $$(grep -E '^HOST_DATA_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
 	mkdir -p $$(grep -E '^HOST_WP_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
