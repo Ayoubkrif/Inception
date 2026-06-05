@@ -6,6 +6,10 @@ if [ ! -f "$WP_FILES_LOCATION/wp-login.php" ]; then
   wp core download --path=$WP_FILES_LOCATION --allow-root
 fi
 
+# BONUS
+rm -f $WP_FILES_LOCATION/wp-content/object-cache.php
+# END OF BONUS
+
 # II — wp-config.php → pointe vers le container MariaDB
 MYSQL_PASSWORD=$(cat /run/secrets/mariadb_password)
 wp config create \
@@ -40,14 +44,12 @@ if ! wp core is-installed --path=$WP_FILES_LOCATION --allow-root 2>/dev/null; th
     --path=$WP_FILES_LOCATION \
     --allow-root
 
-# BONUS
-  wp plugin install redis-cache --activate \
-    --path=$WP_FILES_LOCATION \
-    --allow-root
-# END OF BONUS
 fi
 
 # BONUS
+wp plugin install redis-cache --activate \
+  --path=$WP_FILES_LOCATION \
+  --allow-root
 wp config set WP_REDIS_HOST "Redis" --path=$WP_FILES_LOCATION --allow-root
 wp config set WP_REDIS_PORT "6379" --path=$WP_FILES_LOCATION --allow-root
 wp redis enable --path=$WP_FILES_LOCATION --allow-root
