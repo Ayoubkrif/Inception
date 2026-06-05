@@ -79,6 +79,12 @@ secrets: # build passwd
 		stty echo; \
 		echo ""; \
 		echo "$$portainerpass" > portainer_admin_password.secret; \
+		printf "Mot de passe FTP : "; \
+		stty -echo; \
+		read ftppass; \
+		stty echo; \
+		echo ""; \
+		echo "$$ftppass" > ftp_password.secret; \
 		echo ""; \
 		echo "$(YELLOW)⚠ Secrets modifiés — lance 'make restart' pour re-provisionner la DB$(RESET)"; \
 	else \

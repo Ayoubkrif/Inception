@@ -79,6 +79,27 @@ services:
     restart: unless-stopped
 
 # BONUS
+
+  FTP:
+    build: FTP/
+    pull_policy: build
+    image: ftp:inception
+
+    container_name: FTP
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110" # plage passive PASV — doit correspondre à pasv_min/max_port dans vsftpd.conf
+    networks:
+      - docker_network
+    volumes:
+        - WP:/var/www/html
+    secrets:
+      - ftp_password
+      - certificate
+      - key
+    restart: unless-stopped
+
+
   Redis:
     build: Redis/
     pull_policy: build
@@ -183,4 +204,6 @@ secrets:
 # BONUS
   portainer_admin_password:
     file: ./portainer_admin_password.secret
+  ftp_password:
+    file: ./ftp_password.secret
 # END OF BONUS
