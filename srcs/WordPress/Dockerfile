@@ -10,7 +10,10 @@ RUN apk add --no-cache \
         php83 php83-fpm php83-mysqli php83-pdo_mysql php83-mysqlnd \
         php83-session php83-phar php83-openssl php83-ctype curl \
         php83-dom php83-xml php83-simplexml php83-xmlreader \
-        php83-mbstring php83-iconv php83-fileinfo php83-exif \
+        php83-mbstring php83-iconv php83-fileinfo php83-exif php83-tokenizer \
+		#BONUS
+        php83-redis \
+		#END OF BONUS
     && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp \

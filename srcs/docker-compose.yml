@@ -63,6 +63,10 @@ services:
     depends_on:
       MariaDB:
         condition: service_healthy
+# BONUS
+      Redis:
+        condition: service_healthy
+# END OF BONUS
     networks:
         - docker_network
     volumes:
@@ -75,6 +79,22 @@ services:
     restart: unless-stopped
 
 # BONUS
+  Redis:
+    build: Redis/
+    pull_policy: build
+    image: redis:inception
+
+    container_name: Redis
+    networks:
+      - docker_network
+    healthcheck:
+      test: ["CMD", "sh", "/usr/local/bin/healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
   Portainer:
     build: Portainer/
     pull_policy: build

@@ -39,7 +39,19 @@ if ! wp core is-installed --path=$WP_FILES_LOCATION --allow-root 2>/dev/null; th
     --role=author \
     --path=$WP_FILES_LOCATION \
     --allow-root
+
+# BONUS
+  wp plugin install redis-cache --activate \
+    --path=$WP_FILES_LOCATION \
+    --allow-root
+# END OF BONUS
 fi
+
+# BONUS
+wp config set WP_REDIS_HOST "Redis" --path=$WP_FILES_LOCATION --allow-root
+wp config set WP_REDIS_PORT "6379" --path=$WP_FILES_LOCATION --allow-root
+wp redis enable --path=$WP_FILES_LOCATION --allow-root
+# END OF BONUS
 
 # php-fpm foreground
 exec php-fpm83 -F
