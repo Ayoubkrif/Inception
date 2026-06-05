@@ -18,7 +18,7 @@ Cela s'applique à tout fichier partagé : `docker-compose.yml`, `Makefile`, con
 
 ## Sources & références
 
-- **Interdire** toute ressource issue d'autres projets Inception (repos étudiants, corrections, exemples Inception trouvés en ligne).
+- Ne pas consulter d'autres repos Inception étudiants de sa propre initiative. Si l'étudiant demande explicitement de regarder un repo précis, le faire uniquement sur ce repo et uniquement pour comparer, pas pour recopier.
 - Privilégier dans l'ordre : documentation officielle des providers (Alpine, Debian, MariaDB, WordPress, nginx…), Dockerfiles open source de référence, RFC/specs, tutoriels de production réels.
 - L'objectif est une implémentation proche de la réalité — pas un copier-coller de ce que font les autres étudiants 42.
 
