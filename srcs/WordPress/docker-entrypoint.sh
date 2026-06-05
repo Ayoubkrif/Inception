@@ -30,7 +30,7 @@ if ! wp core is-installed --path=$WP_FILES_LOCATION --allow-root 2>/dev/null; th
     --url=https://$DOMAIN_NAME \
     --title="$WP_TITLE" \
     --admin_user=$WP_ADMIN_USER \
-    --admin_password=$WP_ADMIN_PASS \
+    --admin_password="$WP_ADMIN_PASS" \
     --admin_email=$WP_ADMIN_EMAIL \
     --skip-email \
     --path=$WP_FILES_LOCATION \
@@ -39,7 +39,7 @@ if ! wp core is-installed --path=$WP_FILES_LOCATION --allow-root 2>/dev/null; th
   # V — Deuxième utilisateur (sujet : 2 users, pas admin dans le login)
   WP_USER_PASS=$(cat /run/secrets/wp_user_password)
   wp user create $WP_USER $WP_USER_EMAIL \
-    --user_pass=$WP_USER_PASS \
+    --user_pass="$WP_USER_PASS" \
     --role=author \
     --path=$WP_FILES_LOCATION \
     --allow-root

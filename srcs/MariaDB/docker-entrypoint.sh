@@ -1,12 +1,12 @@
-#!/bin/bash
-set -eo pipefail
+#!/bin/sh
+set -e
 
 # ---------------------------------------------------------------------------
 # Logging
 # ---------------------------------------------------------------------------
 mysql_log() {
 	local type="$1"; shift
-	printf '%s [%s] [Entrypoint]: %s\n' "$(date --rfc-3339=seconds)" "$type" "$*"
+	printf '%s [%s] [Entrypoint]: %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$type" "$*"
 }
 mysql_note()  { mysql_log Note  "$@"; }
 mysql_warn()  { mysql_log Warn  "$@" >&2; }
@@ -26,17 +26,18 @@ docker_init_database_dir() {
 # II - Temporary server (no network, just for provisioning)
 # ---------------------------------------------------------------------------
 docker_temp_server_start() {
-	runuser -u mysql -- mysqld --datadir=/var/lib/mysql --skip-networking --socket=/run/mysqld/mysqld.sock &
+	su-exec mysql mysqld --datadir=/var/lib/mysql --skip-networking --socket=/run/mysqld/mysqld.sock &
 	MARIADB_PID=$!
 	mysql_note "Waiting for temp server (PID $MARIADB_PID)..."
-	local i
-	for i in {30..0}; do
-		if mysqladmin --socket=/run/mysqld/mysqld.sock ping --silent 2>/dev/null; then
+	i=30
+	while [ "$i" -ge 0 ]; do
+		if mariadb-admin --socket=/run/mysqld/mysqld.sock ping --silent 2>/dev/null; then
 			break
 		fi
 		sleep 1
+		i=$((i - 1))
 	done
-	if [ "$i" = 0 ]; then
+	if [ "$i" -lt 0 ]; then
 		mysql_error "Temp server failed to start."
 	fi
 	mysql_note "Temp server ready"
@@ -51,12 +52,11 @@ docker_setup_db() {
 	password=$(cat /run/secrets/mariadb_password)
 
 	mysql_note "Provisioning database"
-	mysql -u root --password='' --socket=/run/mysqld/mysqld.sock <<-EOSQL
+	mariadb -u root --password='' --socket=/run/mysqld/mysqld.sock <<-EOSQL
 		ALTER USER 'root'@'localhost' IDENTIFIED BY '${root_password}';
 		CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
 		CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${password}';
 		GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
-		CREATE USER IF NOT EXISTS 'healthcheck'@'localhost';
 		FLUSH PRIVILEGES;
 	EOSQL
 	mysql_note "Provisioning done"
@@ -83,7 +83,7 @@ _main() {
 		docker_temp_server_stop
 	fi
 	mysql_note "Starting MariaDB daemon"
-	exec runuser -u mysql -- mysqld --datadir=/var/lib/mysql
+	exec su-exec mysql mysqld --datadir=/var/lib/mysql --skip-networking=OFF --bind-address=0.0.0.0
 }
 
 _main "$@"
