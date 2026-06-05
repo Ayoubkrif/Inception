@@ -88,7 +88,7 @@ services:
     container_name: FTP
     ports:
       - "21:21"
-      - "21100-21110:21100-21110" # plage passive PASV — doit correspondre à pasv_min/max_port dans vsftpd.conf
+      - "21100:21100" # plage passive PASV — doit correspondre à pasv_min/max_port dans vsftpd.conf
     networks:
       - docker_network
     volumes:
