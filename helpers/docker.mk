@@ -35,7 +35,7 @@ re: # wipe everything (containers, images, volumes, build cache, db data) and re
 	$(MAKE) compose
 
 ## HELPERS
-ls: image_ls container_ls volume_ls # list images, containers and volumes
+ls: ls_image ls_container ls_volume # list images, containers and volumes
 
 ls_image: # list all docker images
 	docker images
@@ -46,7 +46,7 @@ ls_container: # list all docker containers
 ls_volume: # list all docker volumes
 	docker volume ls
 
-kill: container_kill image_kill volume_kill ls # remove all containers, images and volumes
+kill: kill_container kill_image kill_volume ls # remove all containers, images and volumes
 
 kill_image: # remove all docker images
 	docker rmi $$(docker images -aq) -f
@@ -89,8 +89,8 @@ maria_switch: # swap MariaDB Dockerfile/entrypoint entre debian (actif) et alpin
 	mv srcs/MariaDB/docker-entrypoint.sh.swap srcs/MariaDB/docker-entrypoint.sh.tmp
 
 .PHONY: compose compose_verbose compose_debug clean \
-        image_ls container_ls volume_ls ls \
-        image_kill container_kill volume_kill kill \
+        ls_image ls_container ls_volume ls \
+        kill_image kill_container kill_volume kill \
         logs logs_nginx logs_wordpress logs_mariadb \
         logs_portainer logs_webserv logs_adminer \
         restart maria_switch
