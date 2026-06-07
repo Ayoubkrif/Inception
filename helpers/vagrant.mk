@@ -24,7 +24,7 @@ destroy: # vagrant destroy properly
 	ssh-keygen -R "[127.0.0.1]:2222"
 	vagrant destroy -f
 
-rebuild: destroy # rebuild destroy + vm
+vm_re: destroy # rebuild destroy + vm
 	rm -rf $(BOX_NAME)
 	$(MAKE) $(BOX_NAME)
 

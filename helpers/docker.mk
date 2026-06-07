@@ -1,10 +1,10 @@
 # **************************************************************************** #
 #                            DOCKER COMMAND                                    #
 # **************************************************************************** #
-BUILD_DIR    = $(HOME)/build
+BUILD_DIR    = srcs
 COMPOSE_FILE = $(BUILD_DIR)/docker-compose.yml
 
-move: # copie srcs dans ~/build pour que secrets et Dockerfiles survivent au reboot
+move: # copy srcs files in build path
 	mkdir -p $(BUILD_DIR)
 	cp -r srcs/. $(BUILD_DIR)/
 
@@ -13,6 +13,7 @@ crash: # simule un crash sur tous les containers (kill -9 depuis le host)
 		sudo kill -9 $$pid 2>/dev/null || true; \
 	done
 
+## COMPOSE
 compose: # docker compose
 	mkdir -p $$(grep -E '^HOST_DATA_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
 	mkdir -p $$(grep -E '^HOST_WP_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
@@ -24,36 +25,37 @@ compose_verbose: # docker compose verbose
 compose_debug: # show docker compose variable expanditure
 	docker compose -f $(COMPOSE_FILE) config
 
-clean: # docker compose down
+stop: # docker compose down
 	docker compose -f $(COMPOSE_FILE) down -v
 
-image_ls: # list all docker images
-	docker images
-
-container_ls: # list all docker containers
-	docker ps -a
-
-volume_ls: # list all docker volumes
-	docker volume ls
-
-ls: image_ls container_ls volume_ls # list images, containers and volumes
-
-image_kill: # remove all docker images
-	docker rmi $$(docker images -aq) -f
-
-container_kill: # remove all docker containers
-	docker rm $$(docker ps -aq) -f
-
-volume_kill: # remove all docker volumes
-	docker volume rm $$(docker volume ls -q) -f
-
-kill: container_kill image_kill volume_kill ls # remove all containers, images and volumes
-
-restart: # wipe everything (containers, images, volumes, build cache, db data) and recompose
+re: # wipe everything (containers, images, volumes, build cache, db data) and recompose
 	$(MAKE) kill
 	docker builder prune -f
 	sudo rm -rf $$(grep -E '^HOST_DATA_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
 	$(MAKE) compose
+
+## HELPERS
+ls: image_ls container_ls volume_ls # list images, containers and volumes
+
+ls_image: # list all docker images
+	docker images
+
+ls_container: # list all docker containers
+	docker ps -a
+
+ls_volume: # list all docker volumes
+	docker volume ls
+
+kill: container_kill image_kill volume_kill ls # remove all containers, images and volumes
+
+kill_image: # remove all docker images
+	docker rmi $$(docker images -aq) -f
+
+kill_container: # remove all docker containers
+	docker rm $$(docker ps -aq) -f
+
+kill_volume: # remove all docker volumes
+	docker volume rm $$(docker volume ls -q) -f
 
 logs: # logs de tous les services
 	docker compose -f $(COMPOSE_FILE) logs -f --timestamps NGINX WordPress MariaDB Portainer WebServ Adminer
