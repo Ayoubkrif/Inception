@@ -141,6 +141,8 @@ services:
     container_name: WebServ
     networks:
         - docker_network
+    # volumes:
+    #   - ./WebServ/site:/var/www/html # bind mount direct — non named, invisible dans docker volume ls
     healthcheck:
       test: ["CMD", "curl", "-s", "--http1.1", "http://localhost:80/"]
       interval: 10s
