@@ -1,7 +1,7 @@
 # **************************************************************************** #
 #                            DOCKER COMMAND                                    #
 # **************************************************************************** #
-BUILD_DIR    = srcs
+BUILD_DIR    = ~/build
 COMPOSE_FILE = $(BUILD_DIR)/docker-compose.yml
 
 move: # copy srcs files in build path
@@ -15,6 +15,7 @@ crash: # simule un crash sur tous les containers (kill -9 depuis le host)
 
 ## COMPOSE
 compose: # docker compose
+	$(MAKE) move
 	mkdir -p $$(grep -E '^HOST_DATA_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
 	mkdir -p $$(grep -E '^HOST_WP_PATH=' $(BUILD_DIR)/.env | cut -d= -f2)
 	docker compose -f $(COMPOSE_FILE) up -d

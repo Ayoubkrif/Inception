@@ -33,8 +33,8 @@ env: # build .env
 		echo "WP_USER=$$wpuser" >> .env; \
 		echo "WP_USER_EMAIL=$$wpuseremail" >> .env; \
 		\
-		echo "HOST_DATA_PATH=$$HOME/DB" >> .env; \
-		echo "HOST_WP_PATH=$$HOME/WP" >> .env; \
+		echo "HOST_DATA_PATH=$$HOME/data/DB" >> .env; \
+		echo "HOST_WP_PATH=$$HOME/data/WP" >> .env; \
 		echo "WP_FILES_LOCATION=/var/www/html" >> .env; \
 		echo "DOMAIN_NAME=aykrifa.42.fr" >> .env; \
 	else \
