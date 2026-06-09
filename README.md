@@ -107,7 +107,7 @@ make vm_re            # destroy + rebuild the VM from scratch
 
 ### AI usage
 
-This project was entirely developed with AI assistance (Claude). AI was used to draft Dockerfiles, entrypoint scripts, Makefile rules, and documentation. All prompts were grounded in the official documentation and tutorials listed above — AI served as an accelerator, not a source of truth. Every generated piece was rigorously read, tested, and audited by the developer before being committed, and validated against the referenced documentation end-to-end inside the VM.
+This project was entirely developed with AI assistance . AI was used to draft Dockerfiles, entrypoint scripts, Makefile rules, and documentation. All prompts were grounded in the official documentation and tutorials listed above — AI served as an accelerator, not a source of truth. Every generated piece was rigorously read, tested, and audited by the developer before being committed, and validated against the referenced documentation end-to-end inside the VM.
 
 ## Project description
 
